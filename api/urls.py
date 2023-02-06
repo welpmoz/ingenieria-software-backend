@@ -3,7 +3,7 @@ from django.urls import path, include
 from horario.views import get_horarios
 from curso.views import CursoViewset
 from validator.views import CargaViewset, get_docentes, ArchivosAlumnoViewset
-from .views import signup, login
+from .views import signup, login, get_anteriores_asistencias
 from asistencia.views import AsistenciaViewset, MatriculaViewset
 
 from rest_framework import routers
@@ -33,4 +33,5 @@ urlpatterns = [
   path('carga_alumnos/', include(archivoAlumnosRouter.urls)),
   path('asistencias/', include(asistenciaRouter.urls)),
   path('matriculas/', include(matriculaRouter.urls)),
+  path('otraasistencia/', get_anteriores_asistencias),
 ]

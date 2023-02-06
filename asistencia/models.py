@@ -8,6 +8,9 @@ class Matricula(models.Model):
 
 class Asistencia(models.Model):
   idmatricula = models.ForeignKey(Matricula, on_delete=models.CASCADE)
-  fecha = models.DateTimeField(auto_now_add=True)
+  fecha = models.DateField(auto_now_add=True)
   presente = models.BooleanField(default=False)
   observacion = models.TextField(blank=True)
+
+  class Meta:
+    ordering = ('fecha',)

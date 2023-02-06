@@ -6,6 +6,7 @@ from rest_framework import parsers, permissions, viewsets, decorators, response
 
 from curso.models import Curso
 from horario.models import Horario
+from asistencia.models import Asistencia, Matricula
 
 import openpyxl as xl
 import pandas as pd
@@ -36,6 +37,8 @@ class CargaViewset(viewsets.ModelViewSet):
     NombresDisponible.objects.all().delete()
     Horario.objects.all().delete()
     Curso.objects.all().delete()
+    Matricula.objects.all().delete()
+    Asistencia.objects.all().delete()
     serializer.save()
     archivos = CargasAcademica.objects.all()
     archivo = archivos[0]
@@ -74,7 +77,7 @@ class CargaViewset(viewsets.ModelViewSet):
     # agregar datos a horarios
     columnas_horario = ['DIA', 'HR/\nINICIO', 'HR/\nFIN', 'AULA', 'CODIGO', 'DOCENTES', 'TIPO', 'CARRERA', 'GPO']
     horarios = dataframe[columnas_horario].drop_duplicates()
-    horarios.columns = ['dia', 'hi', 'hf', 'aula', 'codigo_curso', 'docente', 'tipo', 'carrera', 'grupo']
+    horarios.columns = ['dia', 'hi', 'hf', 'aula', 'codigocurso', 'docente', 'tipo', 'carrera', 'grupo']
     horarios['hi'] = pd.Series(map(transformar_hora, horarios['hi']))
     horarios['hf'] = pd.Series(map(transformar_hora, horarios['hf']))
     # abrir la conexion e insertar datos
@@ -109,3 +112,8 @@ class ArchivosAlumnoViewset(viewsets.ModelViewSet):
     lectura['codigocurso'] = codigocurso
     lectura['grupo'] = grupo
     lectura.to_sql(Matricula._meta.db_table, engine, index=False, if_exists='append')
+
+  # PUT
+  def perform_update(self, serializer):
+    print('llamando a put')
+    return super().perform_update(serializer)
